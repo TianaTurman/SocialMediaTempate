@@ -1,0 +1,354 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#183a36">
+  <title>Social Media Practice Studio</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap');
+    :root{--ink:#193532;--muted:#667873;--line:#d9e2dc;--paper:#f3f5ef;--green:#285e50;--mint:#dcebe2;--coral:#bd6145;--white:#fff;--shadow:0 14px 36px #19353212}
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--paper);color:var(--ink);font-family:'DM Sans',sans-serif}
+    button,input,textarea,select{font:inherit}
+    button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:3px solid #d58a47;outline-offset:2px}
+    .page{max-width:1240px;margin:auto;padding:36px 26px 52px}
+    .masthead{display:flex;justify-content:space-between;align-items:flex-start;gap:24px;margin-bottom:30px}
+    .eyebrow{margin:0 0 9px;color:var(--coral);font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase}
+    h1,h2,p{margin-top:0}
+    h1{font:700 34px/1.1 'Fraunces',Georgia,serif;margin-bottom:9px}
+    .intro{max-width:610px;color:var(--muted);line-height:1.55;margin-bottom:0}
+    .local-badge{display:flex;align-items:center;gap:9px;padding:10px 14px;background:#e3efe5;border:1px solid #c8ddcc;border-radius:4px;color:#295a42;font-size:13px;font-weight:600;white-space:nowrap}
+    .dot{width:8px;height:8px;background:#39805c;border-radius:50%}
+    .toolbar{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:16px}
+    .tabs{display:flex;gap:4px;padding:4px;border:1px solid var(--line);background:var(--white);border-radius:6px}
+    .tab,.button{border:0;cursor:pointer;transition:background .16s ease,color .16s ease,transform .16s ease}
+    .tab{padding:10px 17px;color:#51645f;background:transparent;border-radius:3px;font-weight:700}
+    .tab[aria-selected="true"]{background:var(--ink);color:white}
+    .tab:hover:not([aria-selected="true"]){background:#edf2ed}
+    .toolbar-note{font-size:12px;color:var(--muted);margin:0}
+    .workspace{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(350px,.95fr);align-items:start;gap:22px}
+    .panel{background:var(--white);border:1px solid var(--line);box-shadow:var(--shadow);border-radius:7px}
+    .editor{padding:25px 27px}
+    .panel-heading{margin-bottom:22px}
+    h2{font:700 23px/1.2 'Fraunces',Georgia,serif;margin-bottom:6px}
+    .panel-heading p{font-size:13px;color:var(--muted);margin-bottom:0}
+    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}
+    .field-wrap{min-width:0;margin-bottom:17px}
+    label,.legend{display:block;margin-bottom:7px;font-size:12px;font-weight:700;color:#405650}
+    input,textarea,select{width:100%;border:1px solid #cbd7cf;border-radius:4px;padding:10px 11px;color:var(--ink);background:#fff}
+    input:hover,textarea:hover,select:hover{border-color:#8fa99b}
+    textarea{min-height:105px;resize:vertical;line-height:1.5}
+    input[type=file]{font-size:12px;padding:8px}
+    .helper{background:#f7efe2;color:#705638;padding:10px 11px;font-size:11px;line-height:1.45;border-left:3px solid #d5a867;margin:0 0 20px}
+    fieldset{border:0;padding:0;margin:0 0 19px}
+    .engagement{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+    .actions{display:flex;flex-wrap:wrap;gap:9px;padding-top:3px}
+    .button{padding:10px 14px;border-radius:4px;font-size:13px;font-weight:700;min-height:40px}
+    .button:hover{transform:translateY(-1px)}
+    .primary{background:var(--green);color:#fff}.primary:hover{background:#204c41}
+    .secondary{background:#fff;border:1px solid var(--line);color:var(--ink)}.secondary:hover{background:#f2f5f1}
+    .status{min-height:22px;margin:13px 0 0;color:var(--green);font-size:12px;font-weight:600}
+    .status.error{color:#ad3d35}
+    .preview{padding:24px 22px 27px}
+    .preview-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:18px}
+    .preview-head h2{margin-bottom:5px}
+    .preview-head p{font-size:12px;color:var(--muted);margin-bottom:0}
+    .simulation-tag{background:#e7eee7;color:#406047;border-radius:3px;padding:6px 8px;font-size:9px;letter-spacing:.1em;font-weight:700}
+    .phone{width:min(100%,350px);margin:auto;border:7px solid #203833;border-radius:30px;overflow:hidden;background:#fff;box-shadow:0 17px 30px #19353224}
+    .phone-screen{min-height:570px;display:flex;flex-direction:column;background:#fff}
+    .phone-top{display:flex;justify-content:space-between;padding:9px 16px 4px;font-size:9px;font-weight:700}
+    .phone-inner{flex:1;display:flex;flex-direction:column}
+    .network-bar{display:flex;justify-content:space-between;align-items:center;padding:10px 13px;font-size:20px}
+    .network-bar strong{font:700 19px 'Fraunces',Georgia,serif}
+    .network-actions{font-size:16px;letter-spacing:7px}
+    .post-author{display:flex;align-items:center;gap:9px;padding:7px 12px 11px;min-width:0}
+    .avatar{width:36px;height:36px;border-radius:50%;flex:none;display:grid;place-items:center;color:white;font-size:14px;font-weight:700;overflow:hidden;background:#bd6145}
+    .avatar img{width:100%;height:100%;object-fit:cover}
+    .author-name{font-size:11px;font-weight:700;overflow-wrap:anywhere}
+    .post-media{width:100%;aspect-ratio:1.08;background:#edf1ed;display:grid;place-items:center;overflow:hidden;color:#75847c;text-align:center}
+    .post-media img,.post-media video{width:100%;height:100%;object-fit:cover}
+    .empty-media{padding:20px;font-size:11px;font-weight:600;line-height:1.45}
+    .sample-art{position:relative;width:100%;height:100%;overflow:hidden;display:grid;place-items:center;background:linear-gradient(145deg,#dfb78d,#c97456 55%,#50756d);color:#fff}
+    .sample-art:before{content:"";position:absolute;width:60%;height:78%;left:20%;top:34%;border-radius:48% 48% 0 0;background:#315b4e;transform:rotate(-12deg)}
+    .sample-art span{position:relative;align-self:start;margin-top:18%;font-size:clamp(13px,3vw,19px);font-weight:700;letter-spacing:.12em}
+    .post-tools{display:flex;justify-content:space-between;padding:11px 12px 0;font-size:19px}
+    .post-copy{padding:10px 12px 17px;font-size:11px;line-height:1.45;white-space:pre-wrap;overflow-wrap:anywhere}
+    .post-copy p{margin:6px 0 0}
+    .faded{color:#819087}
+    .fb-copy{padding:0 12px 11px;font-size:11px;line-height:1.45;white-space:pre-wrap;overflow-wrap:anywhere}
+    .fb-stats{display:flex;justify-content:space-between;padding:9px 12px;color:#697a73;font-size:10px}
+    .fb-actions{display:flex;justify-content:space-around;padding:9px;border-top:1px solid #e7ece8;border-bottom:1px solid #e7ece8;color:#66766f;font-size:10px}
+    .comment-prompt{margin:10px 12px;border-radius:18px;background:#f0f3f0;padding:8px 12px;color:#7b8983;font-size:10px}
+    .phone-nav{display:flex;justify-content:space-around;padding:11px 8px 13px;margin-top:auto;border-top:1px solid #edf0ed;color:#253d37;font-size:16px}
+    .phone-home{width:94px;height:4px;border-radius:4px;background:#233530;margin:0 auto 6px}
+    .hidden{display:none!important}
+    @media(max-width:860px){.workspace{grid-template-columns:1fr}.preview{order:-1}.phone-screen{min-height:540px}}
+    @media(max-width:600px){.page{padding:25px 15px 36px}.masthead{display:block}.local-badge{display:inline-flex;margin-top:17px}.toolbar{align-items:flex-start;flex-direction:column}.editor{padding:21px 17px}.preview{padding:20px 13px}.form-grid{grid-template-columns:1fr;gap:0}.phone{width:min(100%,350px)}}
+    @media print{body{background:white}.page{padding:0}.masthead,.toolbar,.editor,.preview-head{display:none!important}.workspace{display:block}.preview{border:0;box-shadow:none;padding:0}.phone{border-color:#203833;box-shadow:none}.phone-screen{min-height:0}}
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="masthead">
+      <div>
+        <p class="eyebrow">The classroom creative lab</p>
+        <h1>Social Media Practice Studio</h1>
+        <p class="intro">Build a post, try the layout, and see your ideas come to life in a private practice space.</p>
+      </div>
+      <div class="local-badge"><span class="dot" aria-hidden="true"></span> Practice mode · saved on this device</div>
+    </header>
+    <main>
+      <div class="toolbar">
+        <div class="tabs" role="tablist" aria-label="Choose practice platform">
+          <button class="tab" id="instagram-tab" type="button" role="tab" aria-selected="true">Instagram</button>
+          <button class="tab" id="facebook-tab" type="button" role="tab" aria-selected="false">Facebook</button>
+        </div>
+        <p class="toolbar-note">This simulation never publishes to social media.</p>
+      </div>
+      <div class="workspace">
+        <section class="panel editor" aria-labelledby="editor-heading">
+          <div class="panel-heading"><h2 id="editor-heading">Compose your practice post</h2><p>Changes appear in the preview as you type.</p></div>
+          <form id="composer-form">
+            <div class="form-grid">
+              <div class="field-wrap"><label for="profile-name">Profile name</label><input id="profile-name" maxlength="80" autocomplete="off"></div>
+              <div class="field-wrap"><label for="username">Username / business name</label><input id="username" maxlength="80" autocomplete="off"></div>
+            </div>
+            <div class="form-grid">
+              <div class="field-wrap"><label for="avatar-choice">Profile picture style</label><select id="avatar-choice"><option value="coral">Coral initials</option><option value="ocean">Ocean initials</option><option value="forest">Forest initials</option></select></div>
+              <div class="field-wrap"><label for="avatar-upload">Upload a profile image</label><input id="avatar-upload" type="file" accept="image/*"></div>
+            </div>
+            <div class="field-wrap"><label for="caption">Post caption / text</label><textarea id="caption" maxlength="2200"></textarea></div>
+            <div class="form-grid">
+              <div class="field-wrap"><label for="media-choice">Main media choice</label><select id="media-choice"><option value="none">No media</option><option value="poster">Example creative poster</option></select></div>
+              <div class="field-wrap"><label for="media-upload">Upload an image or video</label><input id="media-upload" type="file" accept="image/*,video/*"></div>
+            </div>
+            <p class="helper">Your draft and uploaded media stay in this browser. Use Download backup to keep a portable copy or move your work to another device.</p>
+            <fieldset><legend class="legend">Example engagement</legend><div class="engagement">
+              <div><label for="likes">Likes</label><input id="likes" type="number" min="0" max="9999999"></div>
+              <div><label for="comments">Comments</label><input id="comments" type="number" min="0" max="9999999"></div>
+              <div><label for="shares">Shares</label><input id="shares" type="number" min="0" max="9999999"></div>
+            </div></fieldset>
+            <div class="actions">
+              <button class="button primary" id="save-button" type="submit">Save on this device</button>
+              <button class="button secondary" id="download-button" type="button">Download backup</button>
+              <button class="button secondary" id="import-button" type="button">Import backup</button>
+              <button class="button secondary" id="print-button" type="button">Print preview</button>
+              <button class="button secondary" id="reset-button" type="button">Reset</button>
+              <input id="import-file" class="hidden" type="file" accept="application/json,.json" aria-label="Choose a practice backup file">
+            </div>
+            <p id="status" class="status" role="status" aria-live="polite"></p>
+          </form>
+        </section>
+        <aside class="panel preview" aria-labelledby="preview-heading">
+          <div class="preview-head"><div><h2 id="preview-heading">Live phone preview</h2><p>Your practice post, updated instantly.</p></div><span class="simulation-tag">SIMULATION</span></div>
+          <div class="phone" aria-label="Social media post preview"><div class="phone-screen">
+            <div class="phone-top"><span>9:41</span><span>●●● ▰</span></div>
+            <div id="instagram-view" class="phone-inner">
+              <div class="network-bar"><strong>Instagram</strong><span class="network-actions" aria-hidden="true">♡ ◉</span></div>
+              <div class="post-author"><div class="avatar avatar-target"></div><strong class="author-name preview-username"></strong><span aria-hidden="true">···</span></div>
+              <div class="post-media media-target"></div>
+              <div class="post-tools"><span aria-hidden="true">♡　◯　➤</span><span aria-hidden="true">▱</span></div>
+              <div class="post-copy"><strong class="preview-likes"></strong> likes<p><strong class="preview-username"></strong> <span class="preview-caption"></span></p><p class="faded">View all <span class="preview-comments"></span> comments</p></div>
+              <div class="phone-nav" aria-hidden="true">⌂　⌕　⊞　▣　◉</div><div class="phone-home"></div>
+            </div>
+            <div id="facebook-view" class="phone-inner hidden">
+              <div class="network-bar"><strong style="font-family:'DM Sans',sans-serif;color:#2865a4;font-weight:700">facebook</strong><span class="network-actions" aria-hidden="true">＋ ⌕ ◉</span></div>
+              <div class="post-author"><div class="avatar avatar-target"></div><div style="min-width:0;flex:1"><strong class="author-name preview-name"></strong><div class="faded" style="font-size:9px">Just now · Public</div></div><span aria-hidden="true">···</span></div>
+              <div class="fb-copy"><span class="preview-caption"></span></div><div class="post-media media-target"></div>
+              <div class="fb-stats"><span>🔵 <span class="preview-likes"></span></span><span><span class="preview-comments"></span> comments · <span class="preview-shares"></span> shares</span></div>
+              <div class="fb-actions"><span>Like</span><span>Comment</span><span>Share</span></div><div class="comment-prompt">Write a comment…</div>
+              <div class="phone-nav" aria-hidden="true">⌂　♧　▤　♧　◉</div><div class="phone-home"></div>
+            </div>
+          </div></div>
+        </aside>
+      </div>
+    </main>
+  </div>
+  <script>
+    (() => {
+      'use strict';
+      const STORAGE_KEY = 'current-draft';
+      const DATABASE_NAME = 'social-media-practice-studio';
+      const defaults = {platform:'instagram',profile_name:'Alex Rivera',username:'alex.creates',caption:'A little creativity goes a long way. What will you make today?',profile_image_choice:'coral',media_choice:'none',likes:295,comments:12,shares:3,avatar_data:'',media_data:'',media_type:'',media_name:''};
+      const ids = ['profile-name','username','caption','avatar-choice','media-choice','likes','comments','shares'];
+      const fields = Object.fromEntries(ids.map(id => [id,document.getElementById(id)]));
+      const status = document.getElementById('status');
+      let draft = {...defaults};
+      let saveTimer;
+
+      function setStatus(message, error=false) {
+        status.textContent = message;
+        status.classList.toggle('error', error);
+      }
+      function updateFields() {
+        fields['profile-name'].value = draft.profile_name;
+        fields.username.value = draft.username;
+        fields.caption.value = draft.caption;
+        fields['avatar-choice'].value = ['coral','ocean','forest'].includes(draft.profile_image_choice) ? draft.profile_image_choice : 'coral';
+        fields['media-choice'].value = ['none','poster'].includes(draft.media_choice) ? draft.media_choice : 'none';
+        for (const key of ['likes','comments','shares']) fields[key].value = draft[key];
+        render();
+      }
+      function readFields() {
+        draft.profile_name = fields['profile-name'].value;
+        draft.username = fields.username.value;
+        draft.caption = fields.caption.value;
+        draft.profile_image_choice = fields['avatar-choice'].value;
+        draft.media_choice = fields['media-choice'].value;
+        for (const key of ['likes','comments','shares']) draft[key] = Math.max(0,Math.min(9999999,Number(fields[key].value)||0));
+        render();
+      }
+      function mediaMarkup() {
+        if (draft.media_data && draft.media_type.startsWith('video/')) return '<video controls playsinline aria-label="Uploaded video preview"></video>';
+        if (draft.media_data) return '<img alt="Uploaded post preview">';
+        if (draft.media_choice === 'poster') return '<div class="sample-art" role="img" aria-label="Example creative poster"><span>CREATE · EXPLORE</span></div>';
+        return '<div class="empty-media">Choose an image or video<br>to preview your post</div>';
+      }
+      function render() {
+        document.getElementById('instagram-view').classList.toggle('hidden',draft.platform !== 'instagram');
+        document.getElementById('facebook-view').classList.toggle('hidden',draft.platform !== 'facebook');
+        for (const platform of ['instagram','facebook']) document.getElementById(platform+'-tab').setAttribute('aria-selected',String(draft.platform === platform));
+        document.querySelectorAll('.preview-username').forEach(el => el.textContent = draft.username || 'your_username');
+        document.querySelectorAll('.preview-name').forEach(el => el.textContent = draft.profile_name || 'Your name');
+        document.querySelectorAll('.preview-caption').forEach(el => el.textContent = draft.caption || 'Your caption will appear here.');
+        for (const key of ['likes','comments','shares']) document.querySelectorAll('.preview-'+key).forEach(el => el.textContent = Number(draft[key]||0).toLocaleString());
+        const colors = {coral:'#bd6145',ocean:'#327eaa',forest:'#447e60'};
+        document.querySelectorAll('.avatar-target').forEach(el => {
+          el.replaceChildren(); el.style.background = colors[draft.profile_image_choice] || colors.coral;
+          if (draft.avatar_data) { const img = document.createElement('img'); img.src = draft.avatar_data; img.alt = 'Uploaded profile picture'; el.append(img); }
+          else el.textContent = (draft.profile_name.trim()[0] || 'A').toUpperCase();
+        });
+        document.querySelectorAll('.media-target').forEach(el => {
+          el.innerHTML = mediaMarkup();
+          const image = el.querySelector('img'); if (image) image.src = draft.media_data;
+          const video = el.querySelector('video'); if (video) video.src = draft.media_data;
+        });
+      }
+      function openDatabase() {
+        return new Promise((resolve,reject) => {
+          if (!window.indexedDB) { reject(new Error('Browser storage is unavailable.')); return; }
+          const request = indexedDB.open(DATABASE_NAME,1);
+          request.onupgradeneeded = () => request.result.createObjectStore('drafts');
+          request.onsuccess = () => resolve(request.result);
+          request.onerror = () => reject(request.error || new Error('Browser storage could not open.'));
+        });
+      }
+      async function saveDraft(showMessage=true) {
+        try {
+          const database = await openDatabase();
+          await new Promise((resolve,reject) => {
+            const transaction = database.transaction('drafts','readwrite');
+            transaction.objectStore('drafts').put(draft,STORAGE_KEY);
+            transaction.oncomplete = resolve;
+            transaction.onerror = () => reject(transaction.error || new Error('Draft could not be saved.'));
+            transaction.onabort = () => reject(transaction.error || new Error('Draft save was cancelled.'));
+          });
+          database.close();
+          if (showMessage) setStatus('Draft and uploads saved in this browser on this device.');
+          return true;
+        } catch (error) {
+          setStatus('This browser could not save the draft. Download a backup to keep your work.',true);
+          return false;
+        }
+      }
+      function scheduleSave() {
+        clearTimeout(saveTimer);
+        saveTimer = setTimeout(() => saveDraft(false),350);
+      }
+      async function loadDraft() {
+        try {
+          const database = await openDatabase();
+          const stored = await new Promise((resolve,reject) => {
+            const request = database.transaction('drafts','readonly').objectStore('drafts').get(STORAGE_KEY);
+            request.onsuccess = () => resolve(request.result);
+            request.onerror = () => reject(request.error || new Error('Draft could not be read.'));
+          });
+          database.close();
+          if (!stored) { updateFields(); setStatus('Ready to practice. Your changes save automatically in this browser.'); return; }
+          draft = {...defaults,...stored};
+          updateFields();
+          setStatus('Your saved practice draft is ready.');
+        } catch (error) {
+          draft = {...defaults}; updateFields();
+          setStatus('Browser storage is unavailable. Download a backup to keep your work.',true);
+        }
+      }
+      function readFileAsDataURL(file) {
+        return new Promise((resolve,reject) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result);
+          reader.onerror = () => reject(new Error('File could not be read.'));
+          reader.readAsDataURL(file);
+        });
+      }
+      function downloadBackup() {
+        readFields();
+        const blob = new Blob([JSON.stringify({format:'social-media-practice-studio',version:1,draft},null,2)],{type:'application/json'});
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url; link.download = 'social-media-practice-backup.json'; link.click();
+        setTimeout(() => URL.revokeObjectURL(url),1000);
+        setStatus('Backup downloaded. Keep that file to restore your post on this or another device.');
+      }
+      async function importBackup(file) {
+        try {
+          const payload = JSON.parse(await file.text());
+          const imported = payload.format === 'social-media-practice-studio' ? payload.draft : payload;
+          if (!imported || typeof imported !== 'object' || Array.isArray(imported)) throw new Error('That file is not a practice backup.');
+          const next = {...defaults,...imported};
+          if (!['instagram','facebook'].includes(next.platform)) next.platform = 'instagram';
+          for (const key of ['profile_name','username','caption']) if (typeof next[key] !== 'string') next[key] = defaults[key];
+          if (next.avatar_data && !String(next.avatar_data).startsWith('data:image/')) next.avatar_data = '';
+          if (next.media_data && !/^data:(image|video)\//.test(next.media_data)) next.media_data = '';
+          draft = next; updateFields();
+          if (await saveDraft(false)) setStatus('Backup imported and saved on this device.');
+        } catch (error) { setStatus(error.message || 'Could not import this backup.',true); }
+      }
+      for (const id of ids) fields[id].addEventListener(id === 'avatar-choice' || id === 'media-choice' ? 'change' : 'input',() => {
+        if (id === 'avatar-choice') {
+          draft.avatar_data = '';
+          document.getElementById('avatar-upload').value = '';
+        }
+        if (id === 'media-choice') {
+          draft.media_data = ''; draft.media_type = ''; draft.media_name = '';
+          document.getElementById('media-upload').value = '';
+        }
+        readFields(); scheduleSave(); setStatus('Changes saved automatically in this browser.');
+      });
+      document.getElementById('avatar-upload').addEventListener('change',async event => {
+        const file = event.target.files[0]; if (!file) return;
+        if (!file.type.startsWith('image/')) { setStatus('Choose an image for the profile picture.',true); event.target.value=''; return; }
+        try { draft.avatar_data = await readFileAsDataURL(file); readFields(); saveDraft(false); setStatus('Profile image added and saved with your draft.'); }
+        catch (error) { setStatus(error.message,true); }
+      });
+      document.getElementById('media-upload').addEventListener('change',async event => {
+        const file = event.target.files[0]; if (!file) return;
+        if (!file.type.startsWith('image/') && !file.type.startsWith('video/')) { setStatus('Choose an image or video file.',true); event.target.value=''; return; }
+        if (file.size > 15 * 1024 * 1024) { setStatus('Choose a file smaller than 15 MB so it can be stored in your browser.',true); event.target.value=''; return; }
+        try {
+          draft.media_data = await readFileAsDataURL(file); draft.media_type = file.type; draft.media_name = file.name;
+          readFields(); saveDraft(false); setStatus('Media added and saved with your draft.');
+        } catch (error) { setStatus(error.message,true); }
+      });
+      for (const platform of ['instagram','facebook']) document.getElementById(platform+'-tab').addEventListener('click',() => {
+        readFields(); draft.platform = platform; render(); scheduleSave(); setStatus('Platform changed. Your draft is saved automatically.');
+      });
+      document.getElementById('composer-form').addEventListener('submit',async event => { event.preventDefault(); readFields(); await saveDraft(); });
+      document.getElementById('download-button').addEventListener('click',downloadBackup);
+      document.getElementById('import-button').addEventListener('click',() => document.getElementById('import-file').click());
+      document.getElementById('import-file').addEventListener('change',async event => {
+        if (event.target.files[0]) await importBackup(event.target.files[0]); event.target.value='';
+      });
+      document.getElementById('print-button').addEventListener('click',() => { readFields(); window.print(); });
+      document.getElementById('reset-button').addEventListener('click',async () => {
+        draft = {...defaults}; updateFields();
+        if (await saveDraft(false)) setStatus('Example draft restored and saved on this device.');
+        document.getElementById('avatar-upload').value=''; document.getElementById('media-upload').value='';
+      });
+      window.addEventListener('beforeunload',() => { clearTimeout(saveTimer); saveDraft(false); });
+      loadDraft();
+    })();
+  </script>
+</body>
+</html>
